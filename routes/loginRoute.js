@@ -16,9 +16,11 @@ router.post("/verify", async (req, res) => {
   const mOtp = generateOTP();
   const user = { mobile: req.body.mobile, mOtp: otp };
   const token = jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "60m" });
-  if (otps.findById(req.body.mobile)) {
-    await otps.deleteOne({ _id: req.body.mobile });
-  }
+  try {
+    if (otps.findById(req.body.mobile)) {
+      await otps.deleteOne({ _id: req.body.mobile });
+    }
+  } catch (e) {}
   const otpSchema = new otp({
     mobile: req.body.mobile,
     code: mOtp,
@@ -27,7 +29,7 @@ router.post("/verify", async (req, res) => {
   });
   try {
     const otpSaved = await otpSchema.save();
-    await otpSender(req.body.mobile, mOtp);
+    // await otpSender(req.body.mobile, mOtp);
     res.send(otpSaved);
   } catch (e) {
     console.log(e);
@@ -117,7 +119,7 @@ function generateOTP() {
   for (let i = 0; i < 4; i++) {
     OTP += digits[Math.floor(Math.random() * 10)];
   }
-
+  console.log(OTP);
   return OTP;
 }
 function auth(req, res, next) {

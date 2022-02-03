@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const trans = require("../models/transactions");
+const rents = require("../models/RentModel");
 router.post("/", auth, async (req, res) => {
-  console.log("ayayayaya");
   const newTrans = new trans({
     transactionId: req.body.transactionId,
     status: req.body.status,
@@ -14,6 +14,25 @@ router.post("/", auth, async (req, res) => {
   try {
     const addTrans = await newTrans.save();
     res.json(addTrans);
+  } catch (e) {
+    console.log(e);
+  }
+});
+router.post("/rents", auth, async (req, res) => {
+  const mRents = new rents({
+    transaction_id: req.body.transactionId,
+    description: req.body.transactionDesc,
+    date: req.body.transactionDate,
+    mobile: req.mobile,
+    account: req.body.transactionAC,
+    ifsc: req.body.transactionIfsc,
+    holderName: req.body.transactionName,
+    amount: req.body.transactionAmount,
+    status: "pending",
+  });
+  try {
+    const savedRent = await mRents.save();
+    res.json(savedRent);
   } catch (e) {
     console.log(e);
   }

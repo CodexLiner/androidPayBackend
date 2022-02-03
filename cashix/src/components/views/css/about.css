@@ -1,0 +1,20 @@
+.Main_Section {
+  display: flex;
+  flex-direction: column;
+}
+.About_Heading {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+.About_paragraph {
+  /* height: 10rem;
+  position: absolute; */
+  overflow-y: hidden;
+  margin: 10px;
+  font-weight: 350;
+  font-size: medium;
+  width: 80%;
+  align-items: center;
+  text-align: start;
+}
